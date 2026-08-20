@@ -10,12 +10,14 @@ This repository distributes a Codex Skill for image generation and editing throu
 - 上传一张或多张参考图进行编辑：`POST /v1/images/edits`
 - 使用 PNG 蒙版进行局部重绘
 - 自动选择生成或编辑模式，并保存结果到本机
+- 高分辨率编辑自动按比例降到稳定的编辑尺寸，避免中转站高分辨率超时
 - 支持 PNG、JPEG、WEBP、GIF 输入；最多 7 张输入图，最多 4 个结果
 
 - Text-to-image generation via `POST /v1/images/generations`
 - Reference-image editing via `POST /v1/images/edits`
 - Masked local repainting with a PNG mask
 - Automatic generate/edit mode selection and local result saving
+- High-resolution edits automatically use a proportional lower working size to avoid relay timeouts
 - PNG, JPEG, WEBP, and GIF inputs; up to 7 input images and 4 outputs
 
 ## 安装 Install
@@ -84,25 +86,16 @@ Edit an original image:
 使用 $api-imagegen 修改我上传的图片：只把天空改成日落，保持主体、构图和其他区域不变。
 ```
 
+对于高分辨率编辑，Skill 会自动降低本次 API 编辑尺寸并保持宽高比；原图不会被覆盖。返回 JSON 会同时给出 `requested_size`、`edit_size` 和 `resized_for_edit`。
+
+For high-resolution edits, the Skill automatically lowers the API working size while preserving aspect ratio. The original file is never overwritten. JSON output includes `requested_size`, `edit_size`, and `resized_for_edit`.
+
 蒙版局部重绘：
 
 Masked repainting:
 
 ```text
 使用 $api-imagegen 修改这张图：只重绘透明蒙版区域，把那里改成一扇木门，其他区域保持不变。
-```
-
-底层命令示例：
-
-Underlying command:
-
-```powershell
-python "<skill-directory>\\scripts\\generate.py" `
-  --prompt "只重绘蒙版区域，把那里改成一扇木门，其他区域保持不变。" `
-  --image "D:\\images\\original.png" `
-  --mask "D:\\images\\mask.png" `
-  --size 1024x1024 `
-  --n 1
 ```
 
 ## 接口要求 API requirements
@@ -129,6 +122,8 @@ This Skill only allows the `auv.666svip.top` host and does not silently use anot
 - This repository contains no keys, personal images, or generated results.
 - Input images are sent only to the user's configured AUV relay.
 
-## License
+## 发布版本 Release
 
-Use this Skill in accordance with the terms of your relay provider and Codex environment.
+当前版本：`1.1.0`，包含高分辨率编辑自动降尺寸修复。
+
+Current version: `1.1.0`, including automatic working-size reduction for high-resolution edits.
