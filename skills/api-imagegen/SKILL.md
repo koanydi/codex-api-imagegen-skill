@@ -12,7 +12,7 @@ Generate or edit images with the bundled script and show the saved result to the
 1. Resolve `scripts/generate.py` relative to this `SKILL.md` file.
 2. Turn the user's request into a complete image prompt. Preserve requested subject, composition, style, lighting, colors, text, and constraints. Do not invent identifying details. When the user supplies a local image, pass it as `--image`; pass a supplied mask as `--mask`.
 3. Choose the requested size, or use `1024x1024` when none is given. Common larger sizes are `2048x2048` for square 2K, `2048x1152` for landscape 2K, `3840x2160` for landscape 4K, and `2160x3840` for portrait 4K. Both edges must be multiples of 16, the longest edge must not exceed 3840 pixels or three times the shorter edge, and total pixels must be between 655,360 and 8,294,400.
-4. Choose the request mode automatically: no `--image` uses `/v1/images/generations`; one or more `--image` files uses multipart `/v1/images/edits`; `--mask` is optional for edit/inpaint requests. Repeat `--image` for multiple reference images, up to seven.
+4. Choose the request mode automatically: no `--image` uses `/v1/images/generations`; one or more `--image` files uses multipart `/v1/images/edits`; `--mask` is optional for edit/inpaint requests. Repeat `--image` for multiple reference images, up to seven. For edit requests above a 1792px long edge, the script automatically lowers the API edit size to a 16px-aligned equivalent ratio before sending it; text-only generation keeps the requested size. The edit response is therefore saved at the lower working size, and the original input file is never overwritten.
 5. Run a generation:
 
    ```text
@@ -27,7 +27,7 @@ Generate or edit images with the bundled script and show the saved result to the
 
    For masked local editing, add `--mask "<mask path>"`. Keep `n` at 1 unless the user explicitly requests variants; the maximum is 4.
 6. Parse the JSON written to stdout. For every path in `files`, display the image with Markdown using the absolute local path, then state the saved path briefly.
-7. If generation or editing fails, report the sanitized error. Never reveal, repeat, or inspect API keys in the response. Reject unsupported dimensions and missing input files locally without calling the API.
+7. If generation or editing fails, report the sanitized error. If an edit was resized, include the requested size and actual edit size from the JSON fields. Never reveal, repeat, or inspect API keys in the response. Reject unsupported dimensions and missing input files locally without calling the API.
 
 ## Configuration
 
