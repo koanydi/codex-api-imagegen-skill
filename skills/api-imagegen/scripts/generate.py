@@ -667,6 +667,7 @@ def main() -> int:
             args.timeout,
         )
         preview_files = preview_paths(files)
+        download_files = preview_files.copy()
         print(
             json.dumps(
                 {
@@ -682,6 +683,7 @@ def main() -> int:
                     "mask": bool(args.mask),
                     "files": files,
                     "preview_files": preview_files,
+                    "download_files": download_files,
                 },
                 ensure_ascii=False,
             )

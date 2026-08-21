@@ -124,9 +124,14 @@ This Skill only allows the `auv.666svip.top` host and does not silently use anot
 
 ## 发布版本 Release
 
-当前版本：`1.1.1`，修复聊天预览图片无法显示的问题，并保留高分辨率编辑自动降尺寸修复。
+当前版本：`1.1.2`，新增直接打开或下载原图的链接，并保留聊天预览和高分辨率编辑修复。
 
-Current version: `1.1.1`, fixing chat preview rendering for generated images and including automatic working-size reduction for high-resolution edits.
+Current version: `1.1.2`, adding direct open/download links for original images and including chat preview and automatic working-size reduction fixes.
+
+### 1.1.2
+
+- 新增 `download_files` 输出，并要求每张预览图附带“点击打开或下载原图”链接。
+- Added `download_files` output and a clickable “open or download original image” link for every preview.
 
 ### 1.1.1
 
