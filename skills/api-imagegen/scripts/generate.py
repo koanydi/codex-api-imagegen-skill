@@ -550,6 +550,11 @@ def save_images(
     return paths
 
 
+def preview_paths(paths: Iterable[str]) -> list[str]:
+    """Return absolute paths normalized for the chat renderer's Markdown URLs."""
+    return [Path(path).resolve().as_posix() for path in paths]
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--prompt")
@@ -661,6 +666,7 @@ def main() -> int:
             output_dir,
             args.timeout,
         )
+        preview_files = preview_paths(files)
         print(
             json.dumps(
                 {
@@ -675,6 +681,7 @@ def main() -> int:
                     "input_images": len(image_paths),
                     "mask": bool(args.mask),
                     "files": files,
+                    "preview_files": preview_files,
                 },
                 ensure_ascii=False,
             )

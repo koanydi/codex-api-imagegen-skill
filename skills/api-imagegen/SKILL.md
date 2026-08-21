@@ -26,7 +26,7 @@ Generate or edit images with the bundled script and show the saved result to the
    ```
 
    For masked local editing, add `--mask "<mask path>"`. Keep `n` at 1 unless the user explicitly requests variants; the maximum is 4.
-6. Parse the JSON written to stdout. For every path in `files`, display the image with Markdown using the absolute local path, then state the saved path briefly.
+6. Parse the JSON written to stdout. For previews, use the `preview_files` values (they are absolute paths normalized with `/` for the chat renderer) in Markdown, one image per line: `![generated image](C:/.../image.png)`. Do not put Windows `files` paths containing `\\` into Markdown; reserve `files` for the native saved-path report. Then state the saved path briefly.
 7. If generation or editing fails, report the sanitized error. If an edit was resized, include the requested size and actual edit size from the JSON fields. Never reveal, repeat, or inspect API keys in the response. Reject unsupported dimensions and missing input files locally without calling the API.
 
 ## Configuration
